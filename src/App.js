@@ -1,23 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions } from './store';
 
 function App() {
+  // kalau diparennya udah ditempelin provider, maka pas pakai useselector,
+  // si useselector bisa ngambil apa yang di store sama provider itu.
+  const counter = useSelector((state) => {
+    return state.counter;
+  });
+  const dispatch = useDispatch();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Counter</h1>
+      <h2>{ counter }</h2>
+      <button onClick={() => dispatch(actions.increment())}>Increment</button>
+      <button onClick={() => dispatch(actions.decrement())}>Decrement</button>
+      <button onClick={() => dispatch(actions.addBy(10))}>Add 10</button>
     </div>
   );
 }
