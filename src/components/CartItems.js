@@ -15,7 +15,7 @@ const CartItems = () => {
               price={item.price}
               name={item.name}
               quantity={item.quantity}
-              total={item.total}
+              total={item.totalPrice}
             />
           </li>
         ))}
