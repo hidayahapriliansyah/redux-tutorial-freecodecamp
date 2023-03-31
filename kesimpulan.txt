@@ -1,0 +1,89 @@
+Ini awalnya dari method createSlice.
+
+createSlice nantinya akan membuat kayak reducer gitu tapi versi buat bisa dipisah pisah.
+
+createSlice punya beberapa properti 
+
+  Contoh kita akan membuat authSlice :
+
+    import { createSlice } from '@reduxjs/toolkit';
+
+    authSlice = createSlice({
+      name: ...
+      initialState: ...
+      reducers: ...
+    });
+
+    untuk reducernya sendiri seperti biasa bisa berupa objek yang berisi
+    method method dengan parameter (state, action)
+
+    contoh 
+    
+    reducer :{
+      login (state, action) {
+        const { email, password } = action.payload;
+      }
+
+      if (email && password) {
+        state.auth = true;
+        // state.auth akan mengakases state auth dari intial state Slice tersebut. Kita bisa mengubahnya
+      }
+    }
+
+nah si authSlice kalau bisa diambil action sama reducernya kayak :
+
+    const authAction = authSlice.action;
+
+    const store = configureStore({
+      reducer: authSlice.reducer,
+    })
+
+nah ... lanjut ke configureStore. Ini penting karenan nanti akan dijadikan props pada 
+elemen <Provider store={store}> di index (root dom) yang didalamnya terdapat App.
+
+    import store from './store';
+    <Provider store={store}>
+      <App />
+    </Provider>
+Kalau udah belajar context dan Reducer kita bakal nemu
+masalah kalau bakal terus terjadi nesting child prop jika kita hanya menggunakan pendekatan
+context dan reducer, nah dengan Provider memimiliki props store maka semua reducer
+disimpan pada store yang mana store adalah hasil dari configureStore.
+fungsi configureStore memasukkan semua reducer dari slice slice yang sudah dibuat 
+
+contoh kita memiliki slice auth, cart, dan ui, maka
+
+    import { configureStore } from '@reduxjs/toolkit';
+    const store = configureStore({
+      reducer: {
+        auth: authSlice.reducer,
+        cart: cartSlice.reducer,
+        ui: uiSlice.reducer,
+      };
+    });
+
+nah nama key dari reducer dalam configureStore ini selanjutnya menentukan nama
+saat penggunaan state oleh komponen menggunakan useSelector.
+
+    const cartState = useSelector((state) => state.cart.namaState)
+
+nah lalu gimana cara make reducer action? kita pakai useDispatch dengan 
+menggunakan parameter action lalu reducer action tersebut. argumen
+pada reducer action akan menjadi variable acton.payload.
+
+  import { useDispatch } from 'react-redux';
+  import { uiActions } from '../store/slices/uiSlice';  
+
+  const handleClose = () => {
+    dispatch(uiActions.showNotification({
+      open: false,
+    }));
+  };
+
+berarti ada beberapa tool nih
+react, react-redux, sama @redux/toolkit
+
+    import { useDispatch, useSelector } from 'react-redux';
+    import { configureStore, combineReducers } from '@reduxjs/toolkit';
+    import { Provider } from 'react-redux';
+

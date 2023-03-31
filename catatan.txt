@@ -1,0 +1,7 @@
+perbedaan redux toolkit sama redux biasa.
+
+Redux toolkit pas ngubah state itu seolah olah si state na di assign pakai let.
+jadi pas mau di ubah bisa bentukna bisa kieu:
+      state.counter--;
+      state.counter++;
+      state.counter += action.payload;
