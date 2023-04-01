@@ -1,10 +1,16 @@
 import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import "./Cart.css";
+import { drawerAction } from '../store/drawerSlice';
 const Cart = () => {
-  const quantity = 5;
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(drawerAction.showCart());
+  }
+  const quantity = useSelector((state) => state.cart.totalQuantity);
   return (
     <div className="cartIcon">
-      <h3>Cart: {quantity} Items</h3>
+      <h3 onClick={handleClick}>Cart: {quantity} Items</h3>
     </div>
   );
 };
